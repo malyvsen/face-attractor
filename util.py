@@ -128,3 +128,11 @@ def try_remove_dir(relative_dir):
 
 def leaky_relu(tensor, leak = 0.1):
 	return tf.maximum(tensor, tensor * leak)
+
+
+
+def shape_volume(shape):
+	result = 1
+	for dim in shape:
+		result *= dim
+	return result
