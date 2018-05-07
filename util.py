@@ -27,7 +27,7 @@ class Face:
 
 
 faces = []
-with open('./CFD Version 2.0.3/CSV.csv') as csv_file:
+with open('./CFD_data.csv') as csv_file:
 	reader = csv.reader(csv_file, delimiter = ',')
 	for row in reader:
 		attractiveness = (float(row[15].replace(',', '.')) - 1) / 5
