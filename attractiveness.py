@@ -5,7 +5,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, Dense
 from keras.layers import MaxPooling2D, Flatten
 from keras.layers import Activation
-from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, TensorBoard, TerminateOnNaN
+from keras.callbacks import ModelCheckpoint, TensorBoard, TerminateOnNaN
 
 
 
