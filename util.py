@@ -69,9 +69,11 @@ def face_batch(batch_size = None, test = False, batch_number = None):
 	set = get_set(test)
 	if not batch_size:
 		batch_size = len(set)
-	start_index = batch_size * (batch_number % set_steps(batch_size = batch_size, test = test))
-	end_index = min(start_index + batch_size, len(set))
-	return set[start_index : end_index] if batch_number else np.random.choice(set, batch_size)
+	if batch_number:
+		start_index = batch_size * (batch_number % set_steps(batch_size = batch_size, test = test))
+		end_index = min(start_index + batch_size, len(set))
+		return set[start_index : end_index]
+	return np.random.choice(set, batch_size)
 
 
 def set_steps(batch_size, test):
