@@ -114,12 +114,15 @@ def cut_resize_image(image, dims = None):
 	if dims_ratio > image_ratio:
 		width = len(image) * dims_ratio
 		mid = len(image[0]) / 2
-		return cv2.resize(image[:, int(mid - width / 2) : int(mid + width / 2)], dims, interpolation = cv2.INTER_AREA)
+		return cv2.resize(image[:, int(mid - width / 2) : int(mid + width / 2)], dims,
+		interpolation = cv2.INTER_AREA if width < len(image[0]) else cv2.INTER_NEAREST)
 	elif dims_ratio < image_ratio:
 		height = len(image[0]) / dims_ratio
 		mid = len(image) / 2
-		return cv2.resize(image[int(mid - height / 2) : int(mid + height / 2)], dims, interpolation = cv2.INTER_AREA)
-	return cv2.resize(image, dims, interpolation = cv2.INTER_AREA)
+		return cv2.resize(image[int(mid - height / 2) : int(mid + height / 2)], dims,
+		interpolation = cv2.INTER_AREA if height < len(image) else cv2.INTER_NEAREST)
+	return cv2.resize(image, dims,
+	interpolation = cv2.INTER_AREA if dims[0] < len(image) else cv2.INTER_NEAREST)
 
 
 
