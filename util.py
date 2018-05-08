@@ -91,10 +91,10 @@ def image_summary(name, tensor, image_dims, channels = 3, max_images = 32, tf_no
 		tf.summary.image(name, tf.cast(tf.reshape(tensor, (-1, image_dims[0], image_dims[1], channels)) * 255.5, tf.uint8), max_outputs = max_images)
 
 
-def preview(names, images, channels = 3, milliseconds = 0, destroy = True):
+def preview(names, images, channels = 3, milliseconds = 0, destroy = True, dims = (256, 256)):
 	for i in range(len(names)):
 		colored = cv2.cvtColor(images[i].astype(np.float32), cv2.COLOR_RGB2BGR if channels == 3 else cv2.COLOR_GRAY2BGR)
-		cv2.imshow(names[i], cv2.resize(colored, (256, 256), interpolation = cv2.INTER_NEAREST))
+		cv2.imshow(names[i], cut_resize_image(colored, dims))
 
 	key = cv2.waitKey(milliseconds)
 
