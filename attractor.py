@@ -37,26 +37,54 @@ def set_image(image):
     image_layer.set_weights(reshaped)
 
 
+def get_attractiveness():
+    batch_prediction = model.predict_on_batch([1.0])
+    return batch_prediction[0][0]
+
+
+def train_attractiveness(target):
+    model.train_on_batch([1.0], [target])
+
+
 set_image(util.test_faces[0].get_image(attractiveness.image_dims))
 
 
 def manual_interface():
     preview_name = 'Image'
-    rating_scale = 100
+    slider_length = 256
+    target_attractiveness = get_attractiveness()
 
     control_window = tk.Tk()
-    current_attractiveness = tk.Scale(control_window, from_ = 0, to = rating_scale, orient = tk.HORIZONTAL)
-    current_attractiveness.pack()
-    target_attractiveness = tk.Scale(control_window, from_ = 0, to = rating_scale, orient = tk.HORIZONTAL)
-    target_attractiveness.pack()
+    control_window.title('Control')
+    current_slider = tk.Scale(control_window, from_ = 0, to = 1, resolution = 0.01,
+    orient = tk.HORIZONTAL, length = slider_length, label = 'Current attractiveness')
+    current_slider.pack()
+    target_slider = tk.Scale(control_window, from_ = 0, to = 1, resolution = 0.01,
+    orient = tk.HORIZONTAL, length = slider_length, label = 'Target attractiveness')
+    target_slider.set(target_attractiveness)
+    target_slider.pack()
 
-    while True:
-        control_window.update()
+    closed = False
+    while not closed:
+        try:
+            current_slider.set(get_attractiveness())
+            target_attractiveness = target_slider.get()
+            train_attractiveness(target_attractiveness)
+            control_window.update()
+        except:
+            closed = True
         preview(window_name = preview_name, blocking = False)
-        if cv2.getWindowProperty(preview_name, cv2.WND_PROP_VISIBLE) < 1:
-            break
+        if cv2.getWindowProperty(preview_name, 0) < 0:
+            closed = True
 
-    cv2.destroyWindow(preview_name)
+    try:
+        control_window.destroy()
+    except:
+        pass
+    try:
+        cv2.destroyWindow(preview_name)
+    except:
+        pass
 
 
 def preview(window_name = 'Image', dims = (512, 512), blocking = True):
