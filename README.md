@@ -1,3 +1,4 @@
+Please note that this repository is in a work-in-progress state. Most notably, the saved model is tragically overfitted.
 # face-attractor
 Machine learning applied to facial beauty: estimation, attribution of attractiveness to features, and photo modification to alter attractiveness estimate.  
 ### dependencies
